@@ -23,7 +23,8 @@ def init_db():
                      "author_id INTEGER NOT NULL,"
                      "created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
                      "title TEXT NOT NULL,"
-                     "body TEXT NOT NULL"
+                     "body TEXT NOT NULL,"
+                     "is_completed INTEGER NOT NULL DEFAULT 0"
                      ");"
                      )
     db.commit()

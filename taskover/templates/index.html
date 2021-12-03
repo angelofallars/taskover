@@ -2,13 +2,47 @@
 
 {% block title %}Main{% endblock %}
 
+{% if g.user %}
+  {% block header %}Tasks for {{ g.user["username"] }}{% endblock %}
+{% endif %}
+
 {% block content %}
   <div class="task-list">
-    {% for task in tasks %}
-      <div class="task">
-        <h2>{{ task.title }}</h2>
-        <p>{{ task.body }}</p>
+    {% if g.user %}
+      <div class="task-list__actions">
+        <a href="{{ url_for("routes.create_task") }}">Create Task</a>
       </div>
-    {% endfor %}
+
+      {% for task in tasks %}
+        <div class="task">
+          <h3>{{ task.title }}</h3>
+          <p>{{ task.body }}</p>
+
+          <form action="{{ url_for("routes.toggle_task") }}" method="post">
+            <input name="id" value="{{ task.id }}" type="hidden">
+
+            {% if task.is_completed == 1 %}
+              <input value="Mark as not done" type="submit">
+            {% else %}
+              <input value="Mark as done" type="submit">
+            {% endif %}
+          </form>
+
+          <form action="{{ url_for("routes.update_task") }}" method="post">
+            <input name="id" value="{{ task.id }}" type="hidden">
+            <input name="update_db" value="no" type="hidden">
+            <input value="Update" type="submit">
+          </form>
+
+          <form action="{{ url_for("routes.delete_task") }}" method="post">
+            <input name="id" value="{{ task.id }}" type="hidden">
+            <input value="Delete" type="submit">
+          </form>
+
+        </div>
+      {% endfor %}
+
+    {% endif %}
+
   </div>
 {% endblock %}

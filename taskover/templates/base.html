@@ -12,7 +12,7 @@
 
   <div id="container">
     <nav>
-      <h1>Flaskr</h1> 
+      <h1>Taskover</h1> 
       <ul>
         {% if g.user %}
           <li><a href="{{ url_for('routes.logout') }}">Logout</a></li>
@@ -26,8 +26,8 @@
     <div class="content">
 
       <header>
-        {% block header %}{% endblock %}
-      </header> 
+        <h2>{% block header %}{% endblock %}</h2>
+      </header>
 
       {% for message in get_flashed_messages() %}
         <div class="flash">{{ message }}</div>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Update Task{% endblock %}
+{% block header %}Update Task{% endblock %}
+
+{% block content %}
+  <div class="task">
+    <h3>{{ task.title }}</h3>
+    <p>{{ task.body }}</p>
+  </div>
+
+  <form method="post">
+    <input name="id" value="{{ task.id }}" type="hidden">
+    <input name="update_db" value="yes" type="hidden">
+    <label for="title">Title</label>
+    <input name="title" id="title" autofocus autocomplete=off type="text" required>
+    <label for="body">Body</label>
+    <input name="body" id="body" autocomplete=off type="text">
+    <input name="submit" type="submit"> 
+    <a href="{{ url_for("routes.index") }}">Cancel</a>
+  </form>
+{% endblock %}
