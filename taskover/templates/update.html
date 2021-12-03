@@ -9,14 +9,19 @@
     <p>{{ task.body }}</p>
   </div>
 
-  <form method="post">
-    <input name="id" value="{{ task.id }}" type="hidden">
-    <input name="update_db" value="yes" type="hidden">
-    <label for="title">Title</label>
-    <input name="title" id="title" autofocus autocomplete=off type="text" required>
-    <label for="body">Body</label>
-    <input name="body" id="body" autocomplete=off type="text">
-    <input name="submit" type="submit"> 
-    <a href="{{ url_for("routes.index") }}">Cancel</a>
+  <form class="form" method="post">
+    <div class="form__fields">
+      <input name="id" value="{{ task.id }}" type="hidden">
+      <input name="update_db" value="yes" type="hidden">
+      <label for="title">Title</label>
+      <input name="title" id="title" autofocus autocomplete=off type="text" required>
+      <label for="body">Body</label>
+      <input name="body" id="body" autocomplete=off type="text">
+    </div>
+
+    <div class="form__submission">
+      <input name="submit" type="submit"> 
+      <a href="{{ url_for("routes.index") }}">Cancel</a>
+    </div>
   </form>
 {% endblock %}

@@ -44,7 +44,7 @@ def index():
     else:
         tasks = {}
 
-    return render_template("index.html", tasks=tasks)
+    return render_template("index.html", tasks=tasks, css="index.css")
 
 
 @bp.route("/create", methods=("GET", "POST"))

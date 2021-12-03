@@ -4,11 +4,15 @@
 {% block header %}Register{% endblock %}
 
 {% block content %}
-  <form method="post">
-    <label for="username">Username</label>
-    <input name="username" id="username" autofocus autocomplete=off type="text" required>
-    <label for="password">Password</label>
-    <input name="password" id="password" autocomplete=off type="password" required> 
-    <input name="submit" type="submit"> 
+  <form method="post" class="form">
+    <div class="form__fields">
+      <label for="username">Username</label>
+      <input name="username" id="username" autofocus autocomplete=off type="text" required>
+      <label for="password">Password</label>
+      <input name="password" id="password" autocomplete=off type="password" required> 
+    </div>
+    <div class="form__submission">
+      <input name="submit" type="submit"> 
+    </div>
   </form>
 {% endblock %}

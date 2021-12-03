@@ -5,22 +5,29 @@
   <meta charset="UTF-8">
   <title>{% block title %}{% endblock %} - Taskover</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  {% if css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/' + css) }}">
+  {% else %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  {% endif %}
+  <script src="https://kit.fontawesome.com/86c060d6eb.js" crossorigin="anonymous"></script>
   <script src="/static/js/script.js" defer></script>
 </head>
 <body>
 
   <div id="container">
-    <nav>
-      <h1>Taskover</h1> 
-      <ul>
-        {% if g.user %}
-          <li><a href="{{ url_for('routes.logout') }}">Logout</a></li>
-        {% else %}
-          <li><a href="{{ url_for('routes.login') }}">Login</a></li>
-          <li><a href="{{ url_for('routes.register') }}">Register</a></li>
-        {% endif %}
-      </ul>
+    <nav class="nav">
+      <div class="nav__content">
+        <div class="nav__title">Taskover</div>
+        <ul class="nav__links">
+          {% if g.user %}
+            <li><a href="{{ url_for('routes.logout') }}">Logout</a></li>
+          {% else %}
+            <li><a href="{{ url_for('routes.login') }}">Login</a></li>
+            <li><a href="{{ url_for('routes.register') }}">Register</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </nav>
 
     <div class="content">
