@@ -38,22 +38,21 @@ a:hover {
   background-color: #D66A25;
   font-weight: 700;
 }
-.nav__title {
-  font-size: 1.8em;
-}
 .nav__content {
-  width: 100%;
+  width: 92%;
   max-width: 900px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px;
+}
+.nav__title {
+  font-size: 1.8em;
 }
 .nav__links {
   font-size: 1.1em;
   list-style-type: none;
   display: flex;
-  gap: 12px;
+  gap: 18px;
 }
 .nav a {
   color: #FFFFFF;
@@ -63,26 +62,46 @@ a:hover {
   display: flex;
   flex-direction: column;
   max-width: 800px;
-  width: 95%;
+  width: 92%;
+  margin: 20px 0;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 15px;
+  gap: 5px;
 }
 .form__fields {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
+  border: 1px solid #B4B4B4;
+  padding: 8px 10px;
+  border-radius: 5px;
+}
+.form__fields input, .form__fields textarea {
+  border: 0;
+  font-size: 0.95em;
+  font-family: "Roboto", sans-serif;
+  resize: none;
+  border: none;
+}
+.form__fields textarea {
+  font-size: 0.88em;
+}
+.form__fields input:focus, .form__fields textarea:focus {
+  outline: none;
+}
+.form__body {
+  height: 40px;
 }
 .form__submission {
   display: flex;
   flex-direction: row;
   gap: 7px;
 }
-.form__submission input, .form__submission a {
+.form__submission input, .form__submission a, .form__submission button {
   color: #BF5612;
   background-color: transparent;
   border: 1px solid #D66A25;
@@ -91,7 +110,7 @@ a:hover {
   font-size: 1em;
   font-weight: 400;
 }
-.form__submission input:hover, .form__submission a:hover {
+.form__submission input:hover, .form__submission a:hover, .form__submission button:hover {
   background-color: #D66A25;
   color: #FFFFFF;
   text-decoration: none;
@@ -100,6 +119,10 @@ a:hover {
 .flash {
   color: #BF2212;
   margin: 10px 0;
+}
+
+.hidden {
+  display: none;
 }
 
 /*# sourceMappingURL=styles.css.map */

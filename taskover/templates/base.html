@@ -20,6 +20,7 @@
       <div class="nav__content">
         <div class="nav__title">Taskover</div>
         <ul class="nav__links">
+          <li><a href="{{ url_for('routes.index') }}">Home</a></li>
           {% if g.user %}
             <li><a href="{{ url_for('routes.logout') }}">Logout</a></li>
           {% else %}

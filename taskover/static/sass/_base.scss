@@ -41,24 +41,23 @@ a:hover {
   background-color: color.$primary;
   font-weight: 700;
 
-  &__title {
-    font-size: 1.8em;
-  }
-
   &__content {
-    width: 100%;
+    width: 92%;
     max-width: 900px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
+  }
+
+  &__title {
+    font-size: 1.8em;
   }
 
   &__links {
     font-size: 1.1em;
     list-style-type: none;
     display: flex;
-    gap: 12px;
+    gap: 18px;
   }
 
   a {
@@ -70,19 +69,43 @@ a:hover {
   display: flex;
   flex-direction: column;
   max-width: 800px;
-  width: 95%;
+  width: 92%;
+  margin: 20px 0;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 15px;
+  gap: 5px;
 
   &__fields {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
+    border: 1px solid color.$fg-lighter;
+    padding: 8px 10px;
+    border-radius: 5px;
+
+    input, textarea {
+      border: 0;
+      font-size: 0.95em;
+      font-family: "Roboto", sans-serif;
+      resize: none;
+      border: none;
+    }
+
+    textarea {
+      font-size: 0.88em;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+    }
+  }
+
+  &__body {
+    height: 40px;
   }
 
   &__submission {
@@ -90,7 +113,7 @@ a:hover {
     flex-direction: row;
     gap: 7px;
 
-    input, a {
+    input, a, button {
       color: color.$primary--dark;
       background-color: transparent;
       border: 1px solid color.$primary;
@@ -111,4 +134,8 @@ a:hover {
 .flash {
   color: color.$red;
   margin: 10px 0;
+}
+
+.hidden {
+  display: none;
 }

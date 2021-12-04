@@ -3,7 +3,7 @@ from sqlite3 import Row
 from typing import Union
 
 from flask import (render_template, redirect, url_for,
-                   flash, g, request, Blueprint, session)
+                   flash, g, request, Blueprint, session, jsonify)
 from werkzeug.security import generate_password_hash, check_password_hash
 from taskover.db import get_db
 
@@ -15,7 +15,7 @@ def get_task(task_id: int, user_id: int) -> Union[Row, None]:
     # Check if a task with that ID exists and is owned by the user
     task = get_db().execute(
                             """SELECT * FROM tasks
-                               WHERE id = ? AND author_id = ?""",
+                               WHERE id = ? AND user_id = ?""",
                             (task_id, user_id)).fetchone()
 
     return task
@@ -39,12 +39,32 @@ def index():
     # Get the list of tasks for the user
     if g.user:
         tasks = db.execute("""SELECT id, title, body, is_completed
-                              FROM tasks WHERE author_id = ?""",
+                              FROM tasks WHERE user_id = ?""",
                            (g.user["id"],)).fetchall()
     else:
         tasks = {}
 
     return render_template("index.html", tasks=tasks, css="index.css")
+
+
+@bp.route("/tasks")
+@login_required
+def fetch_tasks():
+    tasks = get_db().execute("""SELECT id, title, body, is_completed, task_order
+                             FROM tasks WHERE user_id = ?""",
+                             (g.user["id"],)).fetchall()
+
+    # Convert SQLite row into dicts
+    for i in range(len(tasks)):
+        tasks[i] = dict(tasks[i])
+
+        # Convert Pythonic prop names into JavaScript names
+        tasks[i]["isCompleted"] = tasks[i]["is_completed"]
+        del tasks[i]["is_completed"]
+        tasks[i]["order"] = tasks[i]["task_order"]
+        del tasks[i]["task_order"]
+
+    return jsonify(tasks)
 
 
 @bp.route("/create", methods=("GET", "POST"))
@@ -64,10 +84,12 @@ def create_task():
         if not error:
             # Insert the task into database
             db.execute(
-                       """INSERT INTO tasks (title, body, author_id)
-                          VALUES (?, ?, ?)
+                       """INSERT INTO tasks (title, body, user_id, task_order)
+                          VALUES (?, ?, ?,
+                                  (SELECT COUNT(*) FROM tasks WHERE
+                                   user_id = ?) + 1)
                           """,
-                       (title, body, g.user["id"]))
+                       (title, body, g.user["id"], g.user["id"]))
             db.commit()
 
             return redirect(url_for("routes.index"))
@@ -144,6 +166,11 @@ def delete_task():
 
     db.execute("""DELETE FROM tasks
                   WHERE id = ?""", (task_id,))
+    # Shift all proceeding task counts by -1
+    db.execute("""UPDATE tasks
+                  SET task_order = task_order - 1
+                  WHERE user_id = ? AND
+                  task_order > ?""", (g.user["id"], task["task_order"]))
     db.commit()
 
     return redirect(url_for("routes.index"))
