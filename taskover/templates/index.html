@@ -27,4 +27,16 @@
     </div>
 
   {% endif %}
+
+  <div class="form form--update hidden">
+    <div class="form__fields">
+      <input name="title" class="form__title" placeholder="Task name" autofocus autocomplete=off maxlength=30 type="text">
+      <textarea class="form__body" placeholder="Description" name="body" rows=50 cols=36 maxlength=50></textarea>
+    </div>
+
+    <div class="form__submission">
+      <button class="form__add-task">Update Task</button>
+      <button class="form__cancel">Cancel</button>
+    </div>
+  </div>
 {% endblock %}

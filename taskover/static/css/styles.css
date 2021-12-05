@@ -70,28 +70,12 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px;
+  gap: 10px;
 }
 .form__fields {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  border: 1px solid #B4B4B4;
-  padding: 8px 10px;
-  border-radius: 5px;
-}
-.form__fields input, .form__fields textarea {
-  border: 0;
-  font-size: 0.95em;
-  font-family: "Roboto", sans-serif;
-  resize: none;
-  border: none;
-}
-.form__fields textarea {
-  font-size: 0.88em;
-}
-.form__fields input:focus, .form__fields textarea:focus {
-  outline: none;
+  gap: 3px;
 }
 .form__body {
   height: 40px;

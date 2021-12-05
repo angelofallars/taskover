@@ -67,39 +67,35 @@ def fetch_tasks():
     return jsonify(tasks)
 
 
-@bp.route("/create", methods=("GET", "POST"))
+@bp.route("/create", methods=("POST",))
 @login_required
 def create_task():
-    if request.method == "POST":
-        # Get title and body
-        title = request.form.get("title", "")
-        body = request.form.get("body", "")
-        db = get_db()
-        error = None
+    # Get title and body
+    title = request.form.get("title", "")
+    body = request.form.get("body", "")
+    db = get_db()
+    error = None
 
-        # Check if title content exists
-        if not title:
-            error = "Task must have a title."
+    # Check if title content exists
+    if not title:
+        error = "Task must have a title."
 
-        if not error:
-            # Insert the task into database
-            db.execute(
-                       """INSERT INTO tasks (title, body, user_id, task_order)
-                          VALUES (?, ?, ?,
-                                  (SELECT COUNT(*) FROM tasks WHERE
-                                   user_id = ?) + 1)
-                          """,
-                       (title, body, g.user["id"], g.user["id"]))
-            db.commit()
+    if not error:
+        # Insert the task into database
+        db.execute(
+                   """INSERT INTO tasks (title, body, user_id, task_order)
+                      VALUES (?, ?, ?,
+                              (SELECT COUNT(*) FROM tasks WHERE
+                               user_id = ?) + 1)
+                      """,
+                   (title, body, g.user["id"], g.user["id"]))
+        db.commit()
 
-            return redirect(url_for("routes.index"))
-
-        else:
-            flash(error)
-            return redirect(url_for("routes.create_task"))
+        return "OK", 200
 
     else:
-        return render_template("create.html")
+        flash(error)
+        return "ERROR", 400
 
 
 @bp.route("/update", methods=("POST",))
@@ -107,7 +103,6 @@ def create_task():
 def update_task():
     db = get_db()
     task_id = request.form.get("id", None)
-    update_db = request.form.get("update_db", "no")
 
     if not task_id:
         return "Bad request, no task ID", 400
@@ -117,37 +112,31 @@ def update_task():
     if not task:
         return "You are forbidden from accessing that!", 403
 
-    # Update form
-    if update_db == "no":
-        return render_template("update.html", task=task)
+    # Get title and body
+    title = request.form.get("title", "")
+    body = request.form.get("body", "")
+    error = None
 
-    # Update the database
-    elif update_db == "yes":
-        # Get title and body
-        title = request.form.get("title", "")
-        body = request.form.get("body", "")
-        error = None
+    # Check if title content exists
+    if not title:
+        error = "Task must have a title."
 
-        # Check if title content exists
-        if not title:
-            error = "Task must have a title."
+    if not error:
+        # Update the task in the database
+        db.execute(
+                   """UPDATE tasks
+                      SET title = ?,
+                          body = ?
+                      WHERE id = ?
+                      """,
+                   (title, body, task_id))
+        db.commit()
 
-        if not error:
-            # Update the task in the database
-            db.execute(
-                       """UPDATE tasks
-                          SET title = ?,
-                              body = ?
-                          WHERE id = ?
-                          """,
-                       (title, body, task_id))
-            db.commit()
+        return "OK", 200
 
-            return redirect(url_for("routes.index"))
-
-        else:
-            flash(error)
-            return redirect(url_for("routes.create_task"))
+    else:
+        flash(error)
+        return "Error", 400
 
 
 @bp.route("/delete", methods=("POST",))
@@ -173,7 +162,7 @@ def delete_task():
                   task_order > ?""", (g.user["id"], task["task_order"]))
     db.commit()
 
-    return redirect(url_for("routes.index"))
+    return "OK", 200
 
 
 @bp.route("/mark_completion", methods=("POST",))
@@ -197,7 +186,7 @@ def toggle_task():
                   WHERE id = ?""", (new_status, task_id))
     db.commit()
 
-    return redirect(url_for("routes.index"))
+    return "OK", 200
 
 
 @bp.route("/login", methods=("GET", "POST"))

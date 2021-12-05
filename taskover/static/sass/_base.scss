@@ -77,31 +77,12 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 5px;
+  gap: 10px;
 
   &__fields {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    border: 1px solid color.$fg-lighter;
-    padding: 8px 10px;
-    border-radius: 5px;
-
-    input, textarea {
-      border: 0;
-      font-size: 0.95em;
-      font-family: "Roboto", sans-serif;
-      resize: none;
-      border: none;
-    }
-
-    textarea {
-      font-size: 0.88em;
-    }
-
-    input:focus, textarea:focus {
-      outline: none;
-    }
+    gap: 3px;
   }
 
   &__body {

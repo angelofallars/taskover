@@ -27,6 +27,14 @@ function fetchTasks(): void {
   xhttp.send();
 }
 
+function showAddTask() {
+  const form = document.querySelector(".form--create"); 
+  if (form === null) return;
+
+  form.classList.remove("hidden");
+  addTaskInit.classList.add("hidden");
+}
+
 function hideAddTask() {
   const form = document.querySelector(".form--create");
   if (form === null) return;
@@ -110,6 +118,59 @@ function updateTaskView(newTasks: Task[]): void {
       xhttp.send(`id=${encodeURIComponent(task.id)}`);
     });
 
+    // Update a task
+    taskActionsEdit.addEventListener("click", () => {
+      taskElement.classList.add("task--hidden");
+
+      const formUpdate = document.querySelector(".form--update")?.cloneNode(true) as HTMLElement;
+      const formTitle = formUpdate.querySelector(".form__title") as HTMLInputElement;
+      const formBody = formUpdate.querySelector(".form__body") as HTMLTextAreaElement;
+
+      if (formTitle === null || formBody === null) return;
+
+      formTitle.setAttribute("placeholder", task.title);
+      formBody.setAttribute("placeholder", task.body);
+
+      formUpdate.querySelector(".form__add-task")
+        ?.addEventListener("click", () => {
+          let title = formTitle.value;
+          let body = formBody.value;
+
+          if (!title) title = task.title;
+          if (!body) body = task.body;
+
+          taskElement.classList.remove("task--hidden");
+          taskList.removeChild(formUpdate);
+
+          const xhttp = new XMLHttpRequest();
+
+          xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+              fetchTasks();
+            }
+          };
+
+          xhttp.open("POST", "/update");
+          xhttp.setRequestHeader('Content-Type', 
+                                 'application/x-www-form-urlencoded');
+          xhttp.send(`title=${encodeURIComponent(title)}
+                     &body=${encodeURIComponent(body)}
+                     &id=${encodeURIComponent(task.id)}`);
+        });
+
+      formUpdate.querySelector(".form__cancel")
+        ?.addEventListener("click", () => {
+          taskElement.classList.remove("task--hidden");
+          taskList.removeChild(formUpdate);
+        })
+
+      if (formUpdate === undefined) return;
+
+      formUpdate.classList.remove("hidden");
+
+      taskList.insertBefore(formUpdate, taskElement);
+    });
+
     taskContentTitle.textContent = task.title;
     taskContentBody.textContent = task.body;
 
@@ -163,13 +224,7 @@ addTaskButton.addEventListener("click", (e) => {
   xhttp.send(`title=${encodeURIComponent(titleText)}&body=${encodeURIComponent(bodyText)}`);
 });
 
-addTaskInit.addEventListener("click", () => {
-  const form = document.querySelector(".form--create"); 
-  if (form === null) return;
-
-  form.classList.remove("hidden");
-  addTaskInit.classList.add("hidden");
-});
+addTaskInit.addEventListener("click",showAddTask);
 
 cancelAddTask.addEventListener("click", hideAddTask);
 
